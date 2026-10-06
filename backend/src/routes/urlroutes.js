@@ -7,11 +7,8 @@ import urlModel from '../models/url.model.js'
 const router = express.Router()
 
 /*
-
   post /api/url
-
 */
-
 router.post('/', async function (req, res) {
 
     const { url } = req.body;
@@ -76,9 +73,8 @@ router.get('/',async function (req,res) {
 
 router.delete("/:id",async function (req,res) {
     const {id} = req.params;
-    const url = await urlModel.findOne({
-        _id : id
-    })
+    
+    const url = await urlModel.findById(id)
 
     // just checking git commits
 
@@ -87,6 +83,14 @@ router.delete("/:id",async function (req,res) {
             message:"url Not Found"
         })
     }
+
+    await urlModel.findOneAndDelete({
+        _id:id
+    })
+
+    return res.status(200).json({
+        message:"url deleted"
+    })
 })
 
 export default router
